@@ -20,7 +20,20 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string'],
+        ];
+    }
 
+    /**
+     * Get custom messages for validator errors.
+     */
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Email обязателен.',
+            'email.email' => 'Email должен быть действительным адресом.',
+            'password.required' => 'Пароль обязателен.',
         ];
     }
 }
