@@ -1,0 +1,61 @@
+version: "3"
+
+silent: true
+
+tasks:
+  build:
+    desc: Сборка всех контейнеров
+    cmds:
+      - docker compose build
+
+  up:
+    desc: Запуск всех сервисов 
+    cmds:
+      - docker compose up -d
+
+  down:
+    desc: Остановка всех сервисов
+    cmds:
+      - docker compose down
+
+  shell:
+    desc: Попасть в контейнер php
+    cmds:
+      - docker exec -it backend sh
+
+  logs:
+    desc: Просмотр логов
+    cmds:
+      - docker compose logs -f
+
+  pint:
+    desc: Запуск laravel pint
+    cmds:
+      - docker compose exec -t backend ./vendor/bin/pint
+
+  stan:
+    desc: Запуск phpstan
+    cmds:
+      - docker compose exec -t backend ./vendor/bin/phpstan analyse --debug --memory-limit=1G
+
+  test:
+    desc: Запуск тестов
+    cmds:
+      - docker compose exec -t  backend php artisan test
+
+  composer-install:
+    desc: Запуск composer install
+    cmds:
+      - docker compose exec backend composer install
+
+  composer-update:
+    desc: Запуск composer update
+    cmds:
+      - docker compose exec backend composer update
+
+  prep:
+    desc: Подготовка перед коммитом
+    cmds:
+      - task: pint
+      - task: stan
+      - task: test
